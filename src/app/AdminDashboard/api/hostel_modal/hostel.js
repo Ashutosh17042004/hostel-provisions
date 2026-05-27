@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const productItemSchema = new mongoose.Schema({
   id: { type: String, required: true },
@@ -17,21 +17,22 @@ const productCategorySchema = new mongoose.Schema({
 const hostelSchema = new mongoose.Schema(
   {
     Admin: [
-      { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+      { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     ],
-    Users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    Users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     hostelname: { type: String, required: true },
     telegram_token: { type: String },
     telegram_chat_id: { type: String },
     buisness_email: { type: String },
     buisness_email_password: { type: String },
+    phone: { type: Number },
     products: [productCategorySchema],
     logo: { type: String },
     Orders: [{ type: String }],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-const Hostel = mongoose.models.Hostel || mongoose.model('Hostel', hostelSchema);
+const Hostel = mongoose.models.Hostel || mongoose.model("Hostel", hostelSchema);
 
 export default Hostel;

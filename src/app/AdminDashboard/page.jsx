@@ -3,12 +3,11 @@
 import { useEffect, useState } from "react";
 import RegistrationForm from "./components/registrationForm";
 
-
 export default function AdminDashboard() {
   const [existingHostels, setexistingHostels] = useState([]);
   const [registrationForm, setregistrationForm] = useState(false);
   async function getExistingHostelDetails() {
-    const res = await fetch("/api/getDetails");
+    const res = await fetch("/AdminDashboard/api/getDetails");
     const data = await res.json();
     if (res.hostelname) {
       setexistingHostels(data);
@@ -18,11 +17,33 @@ export default function AdminDashboard() {
     getExistingHostelDetails();
   }, []);
 
+  // return (
+  //   <div className="flex flex-col min-h-screen items-center justify-center">
+  //     <div className="text-2xl font-semibold">
+  //       {existingHostels.map((hostel, index) => (
+  //         <div key={index}>{hostel}</div>
+  //       ))}
+  //     </div>
+  //     <div className="text-2xl font-semibold">
+  //       <button
+  //         onClick={() => {
+  //           setregistrationForm(!registrationForm);
+  //         }}
+  //       >
+  //         + Add New Hostel
+  //       </button>
+  //     </div>
+  //     {registrationForm && <RegistrationForm />}
+  //   </div>
+  // );
+
   return (
     <div className="flex flex-col min-h-screen items-center justify-center">
       <div className="text-2xl font-semibold">
         {existingHostels.map((hostel, index) => (
-          <div key={index}>{hostel}</div>
+          // Make sure you render a string here, e.g., hostel.hostelname
+          // React will crash if you try to render an entire object directly
+          <div key={index}>{hostel.hostelname || "Unnamed Hostel"}</div>
         ))}
       </div>
       <div className="text-2xl font-semibold">
@@ -31,10 +52,19 @@ export default function AdminDashboard() {
             setregistrationForm(!registrationForm);
           }}
         >
-          + Add New Hostel
+          {registrationForm ? "Cancel" : "+ Add New Hostel"}
         </button>
       </div>
-      {registrationForm && <RegistrationForm />}
+
+      {/* MINIMUM FIX HERE: Pass the onSuccess prop */}
+      {registrationForm && (
+        <RegistrationForm
+          onSuccess={() => {
+            setregistrationForm(false); // Closes the form
+            getExistingHostelDetails(); // Refreshes the list
+          }}
+        />
+      )}
     </div>
   );
 }
