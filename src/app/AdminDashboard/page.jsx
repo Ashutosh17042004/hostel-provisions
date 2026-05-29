@@ -9,7 +9,8 @@ export default function AdminDashboard() {
   async function getExistingHostelDetails() {
     const res = await fetch("/AdminDashboard/api/getDetails");
     const data = await res.json();
-    if (res.hostelname) {
+    console.log(data)
+    if (data) {
       setexistingHostels(data);
     }
   }
@@ -43,7 +44,7 @@ export default function AdminDashboard() {
         {existingHostels.map((hostel, index) => (
           // Make sure you render a string here, e.g., hostel.hostelname
           // React will crash if you try to render an entire object directly
-          <div key={index}>{hostel.hostelname || "Unnamed Hostel"}</div>
+          <div key={index}>{hostel}</div>
         ))}
       </div>
       <div className="text-2xl font-semibold">
